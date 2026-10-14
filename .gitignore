@@ -262,3 +262,27 @@ tests/
 real_robot/core
 
 docker/env
+
+### Downloaded / generated large files (re-downloadable, keep out of git) ###
+# Model weights fetched with `hf download` (course models, GR00T checkpoints)
+/models/
+**/checkpoint-*/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.onnx
+*.engine
+*.trt
+
+# LeRobot dataset payloads recorded or downloaded outside /datasets/
+*.parquet
+*.npz
+*.npy
+
+# Archives (e.g. ffmpeg tarballs, model bundles)
+*.tar
+*.tar.gz
+*.tar.xz
+*.zip
