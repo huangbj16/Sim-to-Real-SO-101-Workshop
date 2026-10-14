@@ -41,8 +41,14 @@ RUN $PYTHON -m pip install -c /tmp/constraints.txt \
     "deepdiff>=7.0.1,<9.0.0" \
     "feetech-servo-sdk>=1.0.0,<2.0.0"
 
+# BtbN's rolling "latest" release no longer ships the 7.1 branch (only 8.1/9.0/master).
+# Pin a month-end autobuild that still has 7.1; torchcodec<0.6 supports FFmpeg <=7 only.
+ARG FFMPEG_RELEASE=autobuild-2025-08-31-13-00
+ARG FFMPEG_ASSET=ffmpeg-n7.1.1-57-g1b48158a23-linux64-lgpl-shared-7.1.tar.xz
+ARG FFMPEG_SHA256=96350437aeb9d93e028863128b9116be007388a6dd8d803251a93f7d527571a5
 RUN curl --proto "=https" --tlsv1.2 -sSf -L -o /tmp/ffmpeg.tar.xz \
-    https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-lgpl-shared-7.1.tar.xz && \
+    https://github.com/BtbN/FFmpeg-Builds/releases/download/${FFMPEG_RELEASE}/${FFMPEG_ASSET} && \
+    echo "${FFMPEG_SHA256}  /tmp/ffmpeg.tar.xz" | sha256sum -c - && \
     tar -xf /tmp/ffmpeg.tar.xz -C /usr/local --strip-components=1 && \
     ldconfig && \
     rm /tmp/ffmpeg.tar.xz
